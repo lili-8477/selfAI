@@ -1,0 +1,158 @@
+.docsContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 4rem 5%;
+  min-height: 80vh;
+}
+
+.docsHero {
+  text-align: center;
+  margin-bottom: 5rem;
+  padding: 3rem 0;
+}
+
+.docsHero h1 {
+  font-family: 'Orbitron', monospace;
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--primary-gray), var(--accent-gray));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.docsHero p {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.docsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 5rem;
+}
+
+.docCard {
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(224, 224, 224, 0.2);
+  padding: 2.5rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.docCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(224, 224, 224, 0.05), transparent);
+  transition: left 0.5s ease;
+}
+
+.docCard:hover::before {
+  left: 100%;
+}
+
+.docCard:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary-gray);
+  box-shadow: 0 10px 40px rgba(224, 224, 224, 0.15);
+}
+
+.docIcon {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.docCard h3 {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.5rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary-gray);
+}
+
+.docCard p {
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.docArrow {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  font-size: 1.5rem;
+  color: var(--accent-gray);
+  transition: transform 0.3s ease;
+}
+
+.docCard:hover .docArrow {
+  transform: translateX(5px);
+}
+
+.quickLinks {
+  margin-top: 5rem;
+  padding-top: 3rem;
+  border-top: 1px solid rgba(224, 224, 224, 0.1);
+}
+
+.quickLinks h2 {
+  font-family: 'Orbitron', monospace;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: var(--primary-gray);
+}
+
+.linkGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.quickLink {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: rgba(26, 26, 26, 0.4);
+  border: 1px solid rgba(224, 224, 224, 0.1);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.quickLink:hover {
+  border-color: var(--accent-gray);
+  transform: translateX(5px);
+}
+
+.quickLink span {
+  font-size: 2rem;
+}
+
+.quickLink h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+  color: var(--primary-gray);
+}
+
+.quickLink p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 768px) {
+  .docsHero h1 {
+    font-size: 2.5rem;
+  }
+
+  .docsGrid {
+    grid-template-columns: 1fr;
+  }
+}

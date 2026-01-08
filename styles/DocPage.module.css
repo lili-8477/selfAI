@@ -1,0 +1,191 @@
+.docContainer {
+  display: grid;
+  grid-template-columns: 250px 1fr 200px;
+  gap: 3rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  min-height: 80vh;
+}
+
+.sidebar {
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+  background: rgba(26, 26, 26, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(224, 224, 224, 0.1);
+  border-radius: 8px;
+  padding: 2rem;
+}
+
+.sidebar h3 {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: var(--primary-gray);
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.sidebar nav a {
+  color: rgba(255, 255, 255, 0.6);
+  padding: 0.5rem 0;
+  transition: all 0.2s ease;
+  border-left: 2px solid transparent;
+  padding-left: 1rem;
+}
+
+.sidebar nav a:hover {
+  color: var(--primary-gray);
+  border-left-color: var(--primary-gray);
+  padding-left: 1.2rem;
+}
+
+.content {
+  max-width: 900px;
+}
+
+.article h1 {
+  font-family: 'Orbitron', monospace;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--primary-gray), var(--accent-gray));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.description {
+  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(224, 224, 224, 0.1);
+}
+
+.markdown {
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.markdown h2 {
+  font-family: 'Orbitron', monospace;
+  font-size: 2rem;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  color: var(--primary-gray);
+}
+
+.markdown h3 {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 0.8rem;
+  color: var(--accent-gray);
+}
+
+.markdown p {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.markdown ul,
+.markdown ol {
+  margin-bottom: 1.5rem;
+  padding-left: 2rem;
+}
+
+.markdown li {
+  margin-bottom: 0.5rem;
+}
+
+.markdown a {
+  color: var(--primary-gray);
+  text-decoration: underline;
+  transition: all 0.2s ease;
+}
+
+.markdown a:hover {
+  color: var(--highlight-gray);
+}
+
+.markdown blockquote {
+  border-left: 4px solid var(--primary-gray);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+}
+
+.markdown hr {
+  border: none;
+  border-top: 1px solid rgba(224, 224, 224, 0.1);
+  margin: 3rem 0;
+}
+
+.toc {
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+  background: rgba(26, 26, 26, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(224, 224, 224, 0.1);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.toc h4 {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  color: var(--accent-gray);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.toc nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.toc nav a {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.toc nav a:hover {
+  color: var(--primary-gray);
+  padding-left: 0.5rem;
+}
+
+@media (max-width: 1200px) {
+  .docContainer {
+    grid-template-columns: 200px 1fr;
+  }
+
+  .toc {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .docContainer {
+    grid-template-columns: 1fr;
+    padding: 2rem 1rem;
+  }
+
+  .sidebar {
+    position: static;
+  }
+
+  .article h1 {
+    font-size: 2rem;
+  }
+}

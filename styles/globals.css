@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-gray: #e0e0e0;
+  --accent-gray: #b0b0b0;
+  --highlight-gray: #ffffff;
+  --dark-bg: #1a1a1a;
+  --darker-bg: #0f0f0f;
+}
+
+body {
+  font-family: 'Rajdhani', sans-serif;
+  background: var(--darker-bg);
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Code highlighting for docs */
+pre {
+  background: rgba(26, 26, 26, 0.8);
+  border: 1px solid rgba(224, 224, 224, 0.1);
+  border-radius: 8px;
+  padding: 1.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+code {
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 0.9em;
+  background: rgba(224, 224, 224, 0.1);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+}
+
+pre code {
+  background: transparent;
+  padding: 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--darker-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-gray);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-gray);
+}
