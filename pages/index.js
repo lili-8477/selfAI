@@ -7,14 +7,6 @@ export default function Home() {
       <section className={styles.hero}>
         <h1 className={styles.title}>Your AI Assistant</h1>
         <p className={styles.subtitle}>Bringing Intelligence to Your Data & Knowledge</p>
-        <div className={styles.ctaButtons}>
-          <button className={`${styles.btn} ${styles.btnPrimary}`}>
-            Get Started
-          </button>
-          <button className={`${styles.btn} ${styles.btnSecondary}`}>
-            Learn More
-          </button>
-        </div>
       </section>
 
       <section className={styles.features} id="features">

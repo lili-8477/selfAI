@@ -25,12 +25,24 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   letter-spacing: 3px;
+  transition: all 0.3s ease;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.logo:hover {
+.logoContainer:hover .logo {
   filter: drop-shadow(0 0 20px rgba(224, 224, 224, 0.4));
+}
+
+.logoImage {
+  border-radius: 8px;
+  object-fit: cover;
 }
 
 .nav {
