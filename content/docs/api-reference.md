@@ -1,238 +1,164 @@
 ---
-title: 'API Reference'
-description: 'Complete API documentation for Self AI'
+title: 'How LangGraph Orchestrates Multi-AI Workflows'
+description: 'Build specialized AI systems by orchestrating multiple models through customized logic graphs, with database and API integrations that turn generic AI into domain experts.'
 date: '2024-01-01'
 ---
 
-# API Reference
+# How LangGraph Orchestrates Multi-AI Workflows
 
-Complete reference for all Self AI APIs and methods.
+A single AI model can answer questions. But solving real-world problems — the kind that involve multiple steps, different data sources, and domain-specific logic — requires something more: **orchestration**.
 
-## Core API
-
-### Initialize Self AI
-
-```javascript
-import { SelfAI } from 'self-ai';
-
-const ai = new SelfAI(config);
-```
-
-**Parameters:**
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `apiKey` | string | Yes | Your Self AI API key |
-| `environment` | string | No | 'production' or 'development' |
-| `timeout` | number | No | Request timeout in ms (default: 30000) |
-| `retries` | number | No | Number of retry attempts (default: 3) |
-
-### Query Method
-
-Ask questions and get intelligent responses.
-
-```javascript
-const response = await ai.query({
-  question: 'What is machine learning?',
-  context: 'technical',
-  maxTokens: 500
-});
-```
-
-**Parameters:**
-
-- `question` (string, required): The question to ask
-- `context` (string, optional): Context for the question
-- `maxTokens` (number, optional): Maximum response length
-- `temperature` (number, optional): Creativity level (0-1)
-
-**Returns:**
-
-```javascript
-{
-  answer: string,
-  confidence: number,
-  sources: string[],
-  tokens: number
-}
-```
-
-## Database API
-
-### Connect Database
-
-```javascript
-import { DatabaseConnector } from 'self-ai';
-
-const db = new DatabaseConnector({
-  type: 'postgresql', // or 'mysql', 'mongodb', 'sqlite'
-  host: 'localhost',
-  port: 5432,
-  database: 'mydb',
-  user: 'username',
-  password: 'password'
-});
-
-const ai = new SelfAI({ 
-  apiKey: 'your-key',
-  database: db 
-});
-```
-
-### Query Database
-
-Use natural language to query your database:
-
-```javascript
-const result = await ai.queryDatabase(
-  'Show me all customers who made purchases last month'
-);
-
-console.log(result.data);    // Query results
-console.log(result.sql);     // Generated SQL
-console.log(result.count);   // Number of rows
-```
-
-### Schema Analysis
-
-Analyze your database schema:
-
-```javascript
-const schema = await ai.analyzeSchema();
-
-console.log(schema.tables);      // All tables
-console.log(schema.relationships); // Foreign keys
-console.log(schema.suggestions);  // Optimization tips
-```
-
-## Agent Skills API
-
-### Register Agent Skill
-
-```javascript
-import { AgentSkill } from 'self-ai';
-
-const skill = new AgentSkill({
-  name: 'data-processor',
-  description: 'Process and analyze data files',
-  apiKey: 'your-key'
-});
-```
-
-### Define Skill Actions
-
-```javascript
-await skill.defineAction({
-  name: 'processData',
-  description: 'Process uploaded data files',
-  parameters: {
-    format: 'csv',
-    validation: true
-  },
-  handler: async (data) => {
-    // Custom processing logic
-    return processedData;
-  }
-});
-```
-
-### Execute Agent Skill
-
-```javascript
-const result = await skill.execute({
-  action: 'processData',
-  input: {
-    file: 'data.csv',
-    options: {
-      validate: true,
-      format: 'json'
-    }
-  }
-});
-
-console.log(result.status);
-console.log(result.output);
-console.log(result.metadata);
-```
-
-## Advanced Features
-
-### Batch Processing
-
-Process multiple queries efficiently:
-
-```javascript
-const queries = [
-  'Question 1',
-  'Question 2',
-  'Question 3'
-];
-
-const results = await ai.batchQuery(queries);
-```
-
-### Streaming Responses
-
-Get real-time streaming responses:
-
-```javascript
-const stream = ai.queryStream({
-  question: 'Explain quantum computing'
-});
-
-for await (const chunk of stream) {
-  process.stdout.write(chunk);
-}
-```
-
-### Custom Models
-
-Use custom fine-tuned models:
-
-```javascript
-const ai = new SelfAI({
-  apiKey: 'your-key',
-  model: 'custom-model-id'
-});
-```
-
-## Error Handling
-
-```javascript
-try {
-  const response = await ai.query({ question: 'test' });
-} catch (error) {
-  if (error.code === 'RATE_LIMIT') {
-    console.log('Rate limit exceeded');
-  } else if (error.code === 'INVALID_KEY') {
-    console.log('Invalid API key');
-  } else {
-    console.log('Error:', error.message);
-  }
-}
-```
-
-## Error Codes
-
-| Code | Description |
-|------|-------------|
-| `RATE_LIMIT` | Too many requests |
-| `INVALID_KEY` | Invalid API key |
-| `TIMEOUT` | Request timeout |
-| `NETWORK_ERROR` | Connection failed |
-| `INVALID_PARAMS` | Invalid parameters |
-
-## Rate Limits
-
-| Plan | Requests/minute | Requests/day |
-|------|----------------|--------------|
-| Free | 60 | 1,000 |
-| Pro | 600 | 50,000 |
-| Enterprise | Unlimited | Unlimited |
+LangGraph gives you the ability to wire multiple AI agents together into a directed graph, where each node performs a specialized task and edges define the logic of when, how, and why work flows from one step to the next. Combined with database APIs and external services, you can build AI workflows that are genuinely competent at specialized work — not just impressive in a demo.
 
 ---
 
-**Next Steps:**
-- [Tutorials](/docs/tutorials) - Practical examples
-- [Best Practices](/docs/best-practices) - Optimization tips
-- [Database Integration](/docs/database-integration) - Database guides
+## The Problem with Single-Model Approaches
+
+Most AI integrations today look like this: take user input → send it to one big model → return the output. It works for simple tasks. But the moment your use case involves:
+
+- Pulling live data from a database before generating an answer
+- Validating AI output against business rules
+- Routing different types of requests to different specialized models
+- Maintaining state across a multi-step process
+
+...a single prompt-and-respond loop falls apart. You need **flow control**.
+
+---
+
+## What LangGraph Brings to the Table
+
+LangGraph models your AI workflow as a **state machine** — a graph where:
+
+- **Nodes** are individual processing steps: an AI agent, a database query, a validation function, an API call
+- **Edges** define the transitions between steps, including conditional branching
+- **State** is passed and transformed as data flows through the graph
+
+This means you can design workflows like:
+
+```
+User Request
+    │
+    ▼
+[Classifier Agent]  ── "data question" ──▶  [Database Query Node]
+    │                                              │
+    │── "analysis request" ──▶  [Analyst Agent]    │
+    │                               │              │
+    │── "general question" ──▶  [Chat Agent]       │
+    │                               │              │
+    ▼                               ▼              ▼
+                    [Response Synthesizer]
+                           │
+                           ▼
+                     Final Response
+```
+
+Each node does one thing well. The graph handles the logic of how they work together.
+
+---
+
+## Integrating APIs: Where AI Meets Real Data
+
+The real power unlocks when you connect graph nodes to external systems:
+
+### Database APIs
+
+Instead of asking an AI to guess at data, you query it directly:
+
+- A node translates natural language into SQL
+- Another node executes the query against your database
+- A third node interprets the results in context
+
+The AI reasons about the data. The database provides the facts. No hallucinations about numbers that should be looked up, not generated.
+
+### External Service APIs
+
+Your graph can include nodes that call any API:
+
+- **CRM systems** — pull customer context before generating a response
+- **Analytics platforms** — fetch real metrics instead of approximating
+- **Domain-specific tools** — lab information systems, financial data feeds, inventory management
+- **Validation services** — check AI outputs against ground truth before returning them
+
+Each API call is a node in your graph. The orchestration logic decides when to call what, and how to combine the results.
+
+---
+
+## Building Specialized Workflows
+
+Here's what this looks like in practice for a few real scenarios:
+
+### Research Lab: Automated Literature Review
+
+```
+Paper Query → [PubMed API] → [Relevance Filter Agent] → [Summary Agent] → [Citation Formatter] → Report
+```
+
+Multiple specialized agents, each handling their domain. The graph ensures papers are fetched, filtered, summarized, and formatted in the right order, with the right data passed between steps.
+
+### Business: Customer Support Escalation
+
+```
+Customer Message
+    │
+    ▼
+[Intent Classifier]
+    │
+    ├── billing ──▶ [Billing DB Query] → [Billing Agent] → Response
+    ├── technical ──▶ [Knowledge Base Search] → [Tech Agent] → Response
+    └── escalation ──▶ [Ticket Creation API] → [Human Handoff]
+```
+
+Different intents route to different sub-workflows. Each has access to the specific data and tools it needs. No single model needs to know everything.
+
+### Biotech: Data Processing Pipeline
+
+```
+Raw Data Upload
+    │
+    ▼
+[Format Validator] → [Processing Agent] → [QC Check Node] → [Results DB Write] → [Notification API]
+                                              │
+                                              └── fail ──▶ [Error Handler] → [Alert]
+```
+
+The graph handles not just the happy path, but error conditions and branching logic — things that are painful to manage in a single prompt.
+
+---
+
+## Why This Matters
+
+The shift from "one model does everything" to "multiple specialized agents orchestrated through a logic graph" is the difference between a toy and a tool.
+
+**Reliability** — Each node can be tested and validated independently. When something goes wrong, you know exactly where in the graph it happened.
+
+**Flexibility** — Swap out one model for another without rewriting your entire system. Upgrade your database query node without touching your response generation.
+
+**Cost efficiency** — Use lightweight models for simple classification, powerful models for complex reasoning, and no model at all for deterministic steps like data validation.
+
+**Domain competence** — By connecting AI to your actual data sources and business logic, the system doesn't just sound smart — it *is* smart about your specific domain.
+
+---
+
+## Getting Started with Orchestrated AI
+
+If you're exploring multi-agent workflows for your team or organization, here are a few principles:
+
+1. **Start with the workflow, not the AI.** Map out your current process first. Where are the decision points? Where does data come from? Then design the graph.
+
+2. **Keep nodes simple.** Each node should do one thing. A node that "queries the database, interprets results, and generates a response" should be three nodes.
+
+3. **Use APIs for facts, AI for reasoning.** Don't ask AI to remember your product catalog. Query the database and let AI reason about the results.
+
+4. **Build in checkpoints.** Add validation nodes — especially early on — so you can catch issues before they propagate through the graph.
+
+---
+
+## How Self AI Can Help
+
+We specialize in designing and building exactly these kinds of orchestrated AI systems. Whether you need a multi-agent research assistant, an intelligent data pipeline, or a customer-facing AI with real domain expertise, we build the infrastructure that makes it work.
+
+📧 Reach out at [support@selfai.cc](mailto:support@selfai.cc) to discuss your use case.
+
+---
+
+*Self AI — Orchestrated intelligence, built around you.*

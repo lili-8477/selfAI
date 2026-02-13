@@ -1,41 +1,56 @@
 import Layout from '../components/Layout';
+import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 
 export default function Home() {
+  const services = [
+    {
+      title: 'Data & Knowledge AI',
+      description:
+        'Connect your databases, documents, and domain knowledge to build AI that truly understands your business — powered by real data, not guesswork.',
+      image: '/blog-images/home-data-ai.png',
+    },
+    {
+      title: 'AI Infrastructure',
+      description:
+        'We design and build the custom AI architecture your team needs — from multi-agent orchestration to private deployments, tailored to your workflow.',
+      image: '/blog-images/home-ai-infra.png',
+    },
+    {
+      title: 'AI Training & Education',
+      description:
+        'Hands-on programs that teach your team to leverage AI efficiently, reproducibly, and safely — so you get real results, not just experiments.',
+      image: '/blog-images/home-ai-teaching.png',
+    },
+  ];
+
   return (
     <Layout>
       <section className={styles.hero}>
-        <h1 className={styles.title}>Your AI Assistant</h1>
-        <p className={styles.subtitle}>Bringing Intelligence to Your Data & Knowledge</p>
+        <h1 className={styles.title}>Build Your Own AI</h1>
+        <p className={styles.subtitle}>
+          Customized AI infrastructure, superpowered for your needs
+        </p>
       </section>
 
       <section className={styles.features} id="features">
-        <h2 className={styles.sectionTitle}>Core Capabilities</h2>
+        <h2 className={styles.sectionTitle}>Core Services</h2>
         <div className={styles.featuresGrid}>
-          <div className={styles.featureCard}>
-            <div className={styles.featureIcon}>🧠</div>
-            <h3>Smart Understanding</h3>
-            <p>
-              Your AI assistant comprehends your ideas and transforms them into
-              actionable insights with advanced natural language processing.
-            </p>
-          </div>
-          <div className={styles.featureCard}>
-            <div className={styles.featureIcon}>💾</div>
-            <h3>Intelligent Database</h3>
-            <p>
-              Make your databases smarter with AI-powered queries, automated
-              insights, and semantic search capabilities.
-            </p>
-          </div>
-          <div className={styles.featureCard}>
-            <div className={styles.featureIcon}>📚</div>
-            <h3>Agent Skills</h3>
-            <p>
-              Extend your AI with custom skills and workflows that automate
-              complex tasks and integrate with your existing systems.
-            </p>
-          </div>
+          {services.map((service, index) => (
+            <div className={styles.featureCard} key={index}>
+              <div className={styles.featureImage}>
+                <Image
+                  src={service.image}
+                  alt={service.title}
+                  fill
+                  style={{ objectFit: 'cover' }}
+                  sizes="(max-width: 768px) 100vw, 400px"
+                />
+              </div>
+              <h3>{service.title}</h3>
+              <p>{service.description}</p>
+            </div>
+          ))}
         </div>
       </section>
     </Layout>

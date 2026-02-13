@@ -1,93 +1,104 @@
+import fs from 'fs';
+import path from 'path';
+import matter from 'gray-matter';
 import Layout from '../../components/Layout';
 import Link from 'next/link';
-import styles from '../../styles/Docs.module.css';
+import Image from 'next/image';
+import styles from '../../styles/Blog.module.css';
 
-export default function DocsIndex() {
-  const docCategories = [
-    {
-      title: 'Getting Started',
-      description: 'Quick start guide to integrate Self AI into your projects',
-      link: '/docs/getting-started',
-      icon: '🚀'
-    },
-    {
-      title: 'API Reference',
-      description: 'Complete API documentation and endpoint references',
-      link: '/docs/api-reference',
-      icon: '📖'
-    },
-    {
-      title: 'Tutorials',
-      description: 'Step-by-step tutorials for common use cases',
-      link: '/docs/tutorials',
-      icon: '🎓'
-    },
-    {
-      title: 'Database Integration',
-      description: 'Connect Self AI to your existing databases',
-      link: '/docs/database-integration',
-      icon: '💾'
-    },
-    {
-      title: 'Agent Skills',
-      description: 'Extend AI capabilities with custom workflows',
-      link: '/docs/agent-skills',
-      icon: '📚'
-    },
-    {
-      title: 'Best Practices',
-      description: 'Tips and tricks for optimal performance',
-      link: '/docs/best-practices',
-      icon: '⭐'
-    }
-  ];
+export default function BlogIndex({ posts }) {
+  const featured = posts[0];
+  const allPosts = posts.slice(1);
 
   return (
     <Layout showParticles={false}>
-      <div className={styles.docsContainer}>
-        <div className={styles.docsHero}>
-          <h1>Documentation</h1>
-          <p>Everything you need to know about Self AI</p>
+      <div className={styles.blogContainer}>
+        {/* Hero Title */}
+        <div className={styles.blogHero}>
+          <h1>Self AI Blog</h1>
         </div>
 
-        <div className={styles.docsGrid}>
-          {docCategories.map((category, index) => (
-            <Link href={category.link} key={index} className={styles.docCard}>
-              <div className={styles.docIcon}>{category.icon}</div>
-              <h3>{category.title}</h3>
-              <p>{category.description}</p>
-              <span className={styles.docArrow}>→</span>
-            </Link>
-          ))}
-        </div>
+        {/* Featured Post */}
+        {featured && (
+          <Link href={`/blogs/${featured.slug}`} className={styles.featuredPost}>
+            <div className={styles.featuredImage}>
+              <Image
+                src={`/blog-images/${featured.slug}.png`}
+                alt={featured.title}
+                fill
+                style={{ objectFit: 'cover' }}
+                sizes="(max-width: 768px) 100vw, 60vw"
+              />
+            </div>
+            <div className={styles.featuredContent}>
+              <span className={styles.date}>{featured.date}</span>
+              <h2>{featured.title}</h2>
+              <p>{featured.description}</p>
+              <span className={styles.readMore}>Read article →</span>
+            </div>
+          </Link>
+        )}
 
-        <div className={styles.quickLinks}>
-          <h2>Quick Links</h2>
-          <div className={styles.linkGrid}>
-            <a href="#" className={styles.quickLink}>
-              <span>💬</span>
-              <div>
-                <h4>Community</h4>
-                <p>Join our Discord</p>
-              </div>
-            </a>
-            <a href="#" className={styles.quickLink}>
-              <span>🐛</span>
-              <div>
-                <h4>Report Issues</h4>
-                <p>GitHub Issues</p>
-              </div>
-            </a>
-            <a href="#" className={styles.quickLink}>
-              <span>📧</span>
-              <div>
-                <h4>Contact</h4>
-                <p>Get in touch</p>
-              </div>
-            </a>
+        {/* All Posts */}
+        <div className={styles.allPostsSection}>
+          <h2 className={styles.sectionTitle}>All Posts</h2>
+          <div className={styles.postsGrid}>
+            {allPosts.map((post, index) => (
+              <Link
+                href={`/blogs/${post.slug}`}
+                key={index}
+                className={styles.postCard}
+              >
+                <div className={styles.postImage}>
+                  <Image
+                    src={`/blog-images/${post.slug}.png`}
+                    alt={post.title}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    sizes="(max-width: 768px) 100vw, 180px"
+                  />
+                </div>
+                <div className={styles.postContent}>
+                  <span className={styles.date}>{post.date}</span>
+                  <h3>{post.title}</h3>
+                  <p>{post.description}</p>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </div>
     </Layout>
   );
+}
+
+export async function getStaticProps() {
+  const docsDirectory = path.join(process.cwd(), 'content/docs');
+
+  let posts = [];
+
+  if (fs.existsSync(docsDirectory)) {
+    const filenames = fs.readdirSync(docsDirectory);
+    posts = filenames.map((filename) => {
+      const filePath = path.join(docsDirectory, filename);
+      const fileContents = fs.readFileSync(filePath, 'utf8');
+      const { data } = matter(fileContents);
+
+      return {
+        slug: filename.replace('.md', ''),
+        title: data.title || filename.replace('.md', '').replace(/-/g, ' '),
+        description: data.description || '',
+        date: data.date || '',
+      };
+    });
+
+    // Sort by date descending
+    posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+  }
+
+  return {
+    props: {
+      posts,
+    },
+  };
 }
